@@ -93,10 +93,12 @@ public class OrderServiceImpl implements OrderService {
         //判断是否超出配送范围
         String address =
             addressBook.getProvinceName()+addressBook.getCityName()+ addressBook.getDistrictName() + addressBook.getDetail();
-        if(isOutOfRange(address))
+
+        //犹豫暂时没有开通百度地图api，所以暂时跳过超出配送范围的判断
+        /*if(isOutOfRange(address))
         {
             throw new OrderBusinessException(MessageConstant.ORDER_DELIVERY_OUT_OF_RANGE);
-        }
+        }*/
         //获取当前用户的购物车数据
         ShoppingCart shoppingCart = new ShoppingCart();
         Long userId = BaseContext.getCurrentId();

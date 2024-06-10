@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 阿里云OSS配置类
+ * 阿里云OSS配置类 用于初始化阿里云OSS配置 通过@Bean注解将AliOssUtil对象注入到Spring容器中
  */
 @Configuration
 @Slf4j

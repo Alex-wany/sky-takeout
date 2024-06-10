@@ -26,6 +26,9 @@ import org.springframework.stereotype.Component;
 public class AutoFillAspect {
     /**
      * 切入点
+     * execution(* com.sky.mapper.*.*(..)) 表示切入com.sky.mapper包下的所有类的所有方法
+     * @annotation(com.sky.annotation.AutoFill) 表示切入带有AutoFill注解的方法
+     * && 表示并且 两个条件都满足
      */
     @Pointcut("execution(* com.sky.mapper.*.*(..)) && @annotation(com.sky.annotation.AutoFill))")
     public void autoFillPointCut(){}
@@ -37,6 +40,8 @@ public class AutoFillAspect {
     public void autoFill(JoinPoint joinPoint){
         log.info("开始进行自动填充公共字段...");
         //获取方法上的注解,进而获取数据库操作类型
+        //Signature接口提供的信息是比较少，例如可以获取方法名，但无法获取方法的参数类型、返回类型等更详细的信息
+        //为了能够访问这些更详细的方法签名信息，需要将Signature对象转型为MethodSignature对象。MethodSignature是Signature的子接口
         OperationType operationType = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(AutoFill.class).value();
         //获取方法的参数
         Object[] args = joinPoint.getArgs();
@@ -44,7 +49,7 @@ public class AutoFillAspect {
             log.error("方法参数为空,无法进行自动填充...");
             return;
         }
-        //参数实体类
+        //参数实体类 一般是第一个参数 使用 object类型接收 更加通用
         Object entity = args[0];
         //获取自动填充数据
         Long currentId = BaseContext.getCurrentId();
@@ -52,6 +57,8 @@ public class AutoFillAspect {
         //反射获取当前类是否具备设置公共字段的方法
         if(operationType == OperationType.INSERT){
             try {
+                //通过反射获取当前类的部分set方法
+                //语法：Method method = 类名.class.getClass().getDeclaredMethod("方法名",参数类型.class);
                 Method setCreateTime = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_CREATE_TIME, LocalDateTime.class);
                 Method setUpdateTime = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_TIME, LocalDateTime.class);
                 Method setCreateUser = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_CREATE_USER, Long.class);

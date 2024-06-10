@@ -23,7 +23,10 @@ public class OrderTask {
     /**
      * 处理超时订单
      */
-    @Scheduled(cron = "0 * * * * ?")//每分钟执行一次
+    //cron表达式语法
+    //秒 分 时 日 月 星期 年 例如：0 0 12 * * ? 每天中午12点触发
+    //每10分钟执行一次：0 0/10 * * * ?
+    @Scheduled(cron = "0 0/10 * * * ?")//每10分钟执行一次
     public void processTimeoutOrder() {
         log.info("处理超时订单,当前时间：{}", LocalDateTime.now());
         //计算超时订单对应的下单时间

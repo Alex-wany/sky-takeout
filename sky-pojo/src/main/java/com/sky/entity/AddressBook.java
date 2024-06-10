@@ -11,7 +11,7 @@ import java.io.Serializable;
  * 地址簿
  */
 @Data
-@Builder
+@Builder//构建者模式 适用于对象属性较多的情况 通过builder方法设置属性 例如：AddressBook.builder().userId(1L).build();
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddressBook implements Serializable {

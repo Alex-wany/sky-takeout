@@ -18,11 +18,14 @@ import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
 import java.time.LocalDateTime;
 import java.util.Objects;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+@Slf4j
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
@@ -51,6 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         //密码比对
         //将用户输入的密码进行MD5加密，然后再与数据库中的密码进行比对
         password = DigestUtils.md5DigestAsHex(password.getBytes());
+        log.info("当前用户password:{}", password);
         if (!password.equals(employee.getPassword())) {
             //密码错误
             throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
