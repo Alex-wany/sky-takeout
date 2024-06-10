@@ -53,6 +53,7 @@ public class ReportServiceImpl implements ReportService {
         //计算从开始到结束日期的dateList
         List<LocalDate> dateList = getDateList(begin, end);
 
+        //遍历dateList，查询每天的营业额 turnoverList
         List<Double> turnoverList = new ArrayList<>();
         for (LocalDate date : dateList) {
             //获取日期开始结束具体时间
@@ -127,6 +128,7 @@ public class ReportServiceImpl implements ReportService {
      */
     @Override
     public OrderReportVO getOrderStatistics(LocalDate begin, LocalDate end) {
+        //
         List<LocalDate> dateList = getDateList(begin, end);
         //遍历dateList，查询每天的订单量,每天的有效订单量,订单总数,有效订单总数
         List<Integer> orderCountList = new ArrayList<>();
